@@ -1,18 +1,24 @@
-makeCacheMatrix <- function(x = matrix()) {
-        ##  The function creates a matrix that can cache its inverse.
+## The first function makeCacheMatrix creates a matrix that can cache its inverse.
+## The list at the end of the function
+## conatins all the variables that are returned by the function.
+## These variables can then be called by the second function cachesolve.  
+## Cachesolve returns a matrix that is the inverse of the matrix x.
+## If the inverse of x has already been calculated and the matrix has not changed, 
+## the inverse should be retrieved from the cache.
+
+
+## Set, a function within makeCacheMatrix, takes "y" as an argument. 
+## Y is assigned to x, the matrix-argument in 'makeCacheMatrix'. 
+## When calling a$get() and a$getinv the function returns matrix x and Null  
+## for the inverse of x, if no value for the inverse of x had been previously stored in the cache. 
+## x and inv = Null are available outside this function because of the supra assign-opperator. 
+
+        makeCacheMatrix <- function(x = matrix()) {
         
-        inv <- NULL  ## NULL is assigned to the inv-variable 
+        inv <- NULL 
         set <- function(y) {
                 x <<- y
-                inv <<- NULL
-                
-               
-                ## set is the name of a function within makeCacheMatrix.
-                ## Set takes "y" as an argument. Y is assigned to x, which is 
-                ## the matrix-argument for 'makeCacheMatrix'. Through the 
-                ## The function returns x and inv = Null  when calling a$get() and a$getinv if 
-                ## no value is has been stored in the cache yet. 
-                ## These variables are available outside this function because of the supra assign-opperator.  
+                inv <<- NULL          
         }
         
         get <- function() x
@@ -23,17 +29,16 @@ makeCacheMatrix <- function(x = matrix()) {
              getinv = getinv)
 }
 
-##The list conatins all the variables that are be returned by the function.
-## These variables can now be called by the second function cachesolve.  
 
-        
-        cachesolve <- function(x, ...) {
-                ##cachesolve takes one argument, e.g. 'a', which is linked to the first function
-                ##'makeCacheMatrix' and 'x' through a <- makeCacheMatrix(x).
-                ##Cachesolve returns a matrix that is the inverse of 'x' .
-                ##If the inverse has already been calculated and the matrix has not changed, 
-                ##the inverse should be retrieved from the cache (a$getinv()).
-                ## This is indicated by the "getting cached data"-statement. 
+## cachesolve takes one argument, e.g. 'a', which is linked to the first function
+##'makeCacheMatrix' and 'x' through the expression a <- makeCacheMatrix(x).
+## If the inverse of x has already been calculated and the matrix has not changed, 
+## the inverse should be retrieved from the cache (a$getinv()).
+## This is indicated by the "getting cached data"-statement. 
+## If the matrix changed and there is no cached value (a$getinv() = NULL),
+## the inverse of the new matrix will be computed. 
+
+                cachesolve <- function(x, ...) {
                 
                 inv <- x$getinv()
                 if(!is.null(inv)) {
@@ -41,10 +46,8 @@ makeCacheMatrix <- function(x = matrix()) {
                         return(inv)
                 }
                 
-                ## If the matrix changed and there is no cached value (a$getinv() = NULL),
-                ## the inverse of the new matrix will be computed. 
                 data <- x$get()
-                inv <- solve(data, ...)  ## computates the inverse of matrix x
-                x$setinv(inv) ## sets a new inverse in the cache
+                inv <- solve(data, ...)  
+                x$setinv(inv) 
                 inv 
         }
