@@ -13,7 +13,7 @@
 ## for the inverse of x, if no value for the inverse of x had been previously stored in the cache. 
 ## x and inv = Null are available outside this function because of the supra assign-opperator. 
 
-        makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x = matrix()) {
         
         inv <- NULL 
         set <- function(y) {
@@ -38,16 +38,16 @@
 ## If the matrix changed and there is no cached value (a$getinv() = NULL),
 ## the inverse of the new matrix will be computed. 
 
-                cachesolve <- function(x, ...) {
-                
-                inv <- x$getinv()
-                if(!is.null(inv)) {
-                        message("getting cached data")
-                        return(inv)
-                }
-                
-                data <- x$get()
-                inv <- solve(data, ...)  
-                x$setinv(inv) 
-                inv 
+cachesolve <- function(x, ...) {
+        
+        inv <- x$getinv()
+        if(!is.null(inv)) {
+                message("getting cached data")
+                return(inv)
         }
+        
+        data <- x$get()
+        inv <- solve(data, ...)  
+        x$setinv(inv) 
+        inv 
+}
